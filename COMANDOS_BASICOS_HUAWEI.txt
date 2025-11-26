@@ -1,0 +1,214 @@
+Comandos uteis da HUAWI
+
+VERIFICANDO O TEMPO DE ATIVIDADE DA OLT
+
+display sysuptime
+
+
+VERIFICANDO A PLACA OLT
+display board 0
+
+
+VERIFICANDO PROCESSADOR OLT E MEMÓRIA POR SLOT
+display mem 0/1
+Ocupação de memória: %
+----------------------------------------------
+display cpu 0/1
+Ocupação da CPU: %
+
+
+VERIFICANDO OS REGISTROS DO HISTÓRICO DO ONT
+config
+interface gpon 0/X
+display ont register-info X X
+
+
+
+VOCÊ PODE FAZER PING DE SEU ONT: P
+conf
+interface gpon 0/X
+ont remote-ping X X endereço ip
+
+
+VERIFICANDO O NÍVEL DE RX PARA O UPLINK OLT
+config
+interface giu 0/X
+display port ddm-info 0
+
+
+Encontrando ONT ?
+
+display ont info by-sn XXX ---> (8 ultimos números da ONU)
+display ont info by-desc   ---> Nome
+display ont info by-ip	   ---> Ip adress
+display ont info by-loid   ---> Logic ONU identifier
+display ont info by-mac    ---> MAC
+
+
+
+MUDANÇAS NA ONT
+
+display ont info X X X X
+conf
+interface gpon 0/X
+ont modify X X desc ""
+ont modify X X sn
+ont modify X X ?
+
+
+VERIFICANDO O STATUS RAMO / PON (UP or Down)
+
+display ont info 0 X X all ---> (identificar o ramo e a pon)
+
+
+EXCLUIR ONU
+
+display current-configuration ont 0/X/X
+
+
+
+VERIFICANDO OS REGISTROS DO HISTÓRICO (Quedas do Ramo / Pon)
+
+config
+interface gpon 0/1 ---->(identificar o ramo / Pon)
+display ont register-info 0 1 ----> (identificar o ramo / Pon)
+return
+
+
+
+REINICIAR ONU
+
+config
+interface gpon 0/X ----> (Identificar RAMO / PON)
+ont reset 0 X  ----> (Identificar PON ONU)
+ Resetting the ONT(s) will interrupt all services on the ONT(s)
+  Are you sure to reset the ONT(s)? (y/n)[n]: y
+
+
+
+REDEFINIR FÁBRICA ONU
+
+config
+interface gpon 0/X  ----> (Identificar RAMO / PON)
+ont factory-setting-restore 0 X  ----> (Identificar ONU)
+
+
+
+COMO ENCONTRAR ONT PELO MAC
+
+display location XXXX-XXXX-XXXX  ---> (Identificar o MAC)
+Command:
+display location 4cf9-5dd3-1914
+It will take several minutes, and console may be timeout, please use command  idle-timeout to set time limit
+Are you sure to query MAC address location ? (y/n)[n]:y ----> (Marcar y para confirmar a busca)
+
+
+
+VERIFICANDO O ENDEREÇO ​​MAC ----> (Verifica também a Vlan Id)
+
+display mac-address port 0/X/X ont X ----> (Colocar o Ramo / Pon e identicar o número da ONU)
+
+
+
+VERIFICANDO A ENERGIA ---> (Potência da ONUS)
+
+config
+interface gpon 0/X
+display ont optical-info 0 all
+return
+
+
+IDENTIFICAR O EQUIPAMENTO DO CLIENTE
+
+conf
+interface gpon 0/X
+display ont info summary X
+
+
+VERIFICANDO POTÊNCIA DO CLIENTE
+
+conf
+interface gpon 0/X
+display ont optical-info X X | no-more
+
+
+INFORMAÇÕES DA ONU
+
+display ont wan-info 0/X X X | no-more
+
+conf
+display current-configuration ont 0/X/X X
+
+
+
+VERIFICAR O DHCP ATRELADO
+conf
+interface gpon 0/X
+display on
+
+
+HABILITAR DHCP
+conf
+interface gpon 0/X
+ont ipconfig X X dhcp vlan 99 priority 0
+
+
+VERIFICANDO A VERSÃO ONT ---> (Verificar a versão da ONU)
+
+display ont version 0 X 0 X   ----> (Identificar o RAMO / PON e ONU)
+
+
+
+VERIFICAR SE TEM DHCP HABILITADO / VERIFICANDO ONT IP (MODO DE ROTEAMENTO) ---> (Cliente com ONU COM WI-FI)
+
+display ont wan-info 0/X 0 X  ----> (Identificar RAMO / PON e número da ONU)
+
+
+conf
+#interface gpon 0/2
+#display ont ipconfig 12 124
+
+
+
+display ont wan-info 0/2 6 127 | no-more
+
+
+
+VERIFICANDO O STATUS DA PORTA ONT ---> (Identificar as portas ativas LAN/WAN)
+
+config
+interface gpon 0/X ----> (Identificar o RAMO / PON)
+display ont port state 0 X eth-port all | no-more  ----> (Identificar a ONU)
+
+
+
+VERIFICAR SERIAL NUMBER(SN) DA ONU
+
+config
+inteface gpon 0/X
+display ont register-info X X | no-more
+
+
+
+VERIFICANDO A CONFIGURAÇÃO DO ONT ---> (Puxar o Scrip de provisionamento)
+
+display current-configuration ont 0/X/0 X ----> (Identificar RAMO / PON e ONU)
+
+
+
+
+VERIFICAR QUANTOS SERVIÇOS POR ONT ---> (Verificar os service port criados)
+
+display service-port port 0/X/0 ont X | no-more  ----> (Identificar RAMO/PON e ONU)
+
+
+=====================
+
+ATIVAR O ACESSO REMOTO NA ONT
+
+Diagnose
+ 
+Ont wan-acess http X/X/X X
+ 
+Enable
+
