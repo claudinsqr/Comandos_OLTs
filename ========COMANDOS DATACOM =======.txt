@@ -1,0 +1,129 @@
+========COMANDOS DATACOM =======
+
+******* ATRALHOS DO TECLADO NO DMOS*****
+CTRL-H ou BACKSPACE Deleta o caractere
+DEL Delete
+CTRL A Move o cursor para o primeiro caractere
+CTRL E Move o cursos para o final do comando
+CTRL F Avançar um caractere sem apagá-lo
+CRTL B Retornar um caractere sem apagá-lo
+CTRL D Retorna um nível no menu
+CTRL U ou CTRL-X Exclui toda a linha de comando
+CTRL K Exclui do caractere corrente até o final da linha
+CTRL L Limpa a tela
+CTRL W Exclui a palavra anterior
+CTRL T Inverte os caracteres
+CTRL P Exibe o comando mais recente
+CTRL R Reescreve a linha de comando
+CRTL N Retorna para comandos mais recentes
+CTRL Z Retorna ao menu raiz
+Tab Completa o comando
+? Ajuda
+
+
+1 - #########CONFIGURAÇÃO E ACESSOS#########
+config - entrar no modo de configuração
+config - exclusive - Modo exclusivo, não permite a inserção de configurações por outro usuário conectado ao
+equipamento
+
+
+******CONFIGURAR INTERFACES*********
+interface gigabit-ethernet <chassis/slot/porta>
+interface ten-gigabit-ethernet <chassis/slot/porta
+interface forty-gigabit-ethernet <chassis/slot/porta
+interface hundred-gigabit-ethernet <chassis/slot/porta
+
+******EXIT******
+top
+CRTL-D | exit
+CTRL-Z | end
+
+
+2 -  #####GERENCIAMENTO CLI - VERIFICAÇÕES #######
+****VERIFICAÇAÕ DAS CONFIGURAÇÕES GLOBAIS VALIDAS PARA O EQUIPAMENTO ******
+show running-config - verificar todas as configurações salvas no equipamento
+show envirinmet
+show firmware
+show inventory
+show tech-support - apresentar todos os comandos e configurações no switch
+show alarm 
+
+show interface gpon 1/1/1 onu| include down - mostrar todos os clientes downs de um ramo
+
+
+
+******VERIFICAR AS CONFIGURAÇÕES DAS INTERFACES *******
+show interface gigabit-ethernet <chassis/slot/porta>
+show interface ten-gigabit-ethernet <chassis/slot/porta
+show interface forty-gigabit-ethernet <chassis/slot/porta
+show interface hundred-gigabit-ethernet <chassis/slot/port
+show interface transceiver 
+show interface utilization - mostrar a utilização de cada porta individual de formar bem limpa
+show interface utilization ten-gigabit-ethernet-x/x/x,xx - Para mostrar a utilização de duas ou  mais interfaces específicas
+
+*****VERIFICAR AS VLAN *****
+show vlan brief
+show vlan brief | tab
+show vlan membership 
+
+
+*****APLICAR CONFIGURAÇÕES***
+(config)commit - aplicar uma configuração
+(config)commit check - conferir a configiração sem aplica-la
+(config)commit confirmed - aplicar a configuração temporariamente(exclusivo para o modo config Exclusive)
+(config)commit abort - abortar a aplicação da configuração temporária antes do tempo default
+show configuration commit list - verificar os commits realizados. 
+(config) clear - apagar todas as alterações de configuração realizadas após o último commit. 
+
+
+
+
+=====COMANDOS QUE TALVEZ PRECISE EM ALGUM MOMENTO ==========
+
+show pppoe intermediate-agent sessions interface gpon | include - procurar a onu pelo mac  de autenticação 
+
+sh int gp 1/1/1 onu * | display cur | include "name|eqid"  - mostrar os equipamentos que estão no ramo 
+
+show mac-address-table interface service-port-10113 - CONSULTA MAC AO SERVICE-PORT
+
+show mac-address-table vlan 1140 - CONSULTA MAC A VLAN 
+
+sh int gp 1/1/12 onu * | display cur | incl "name|last-seen-online|primary-status" - OLHAR QUEDAS DE CONEXAO ONUS OLT
+
+sh int gp 1/1/* onu * | display cur | incl "name|rx-optical-pw" -OLHAR POTENCIAS ONUS OLT
+
+show running-config service-port | include "gpon 1/1/1 onu 46" - OLHAR SERVICE-PORT
+
+show log | include "gpon-1/1/2/2 " | include "2021-07-09" -OLHAR LOG
+
+show interface gpon 1/1/1 onu 1 rssi -POTENCIA LEITURA OLT
+
+Uptime: uptime ou show system uptime -OLHAR CONTINUIDADE CONEXAO (UPTIME)
+
+show system reboot -Motivo da última inicialização
+
+show pppoe intermediate-agent sessions interface gpon 1/1/5 -CONSULTA DE MACS
+
+request firmware onu install DM986-414-5.0.tar interface gpon 1/1/5 onu 5
+show firmware onu - atualizar onu via cli
+
+aaa user (nome_usuario) password - mudar a senha do usuario. 
+
+show running-config service-port | context-match "gpon 1/1/*" -- verificar o servisse-port e uma determinada PON
+
+show onu-interface-count --  Resumo info de PONS e ONUS por PON
+
+
+
+*******COMANDOS PARA VERIFICAR AS CONFIGURAÇÕES CANDIDATAS********
+
+SHOW CONFIGURATION THIS - VERIFICAR OS COMANDOS QUE SERÃO APLICADOS COM O COMMIT, ANTES DE EXERCUTÁ-LO
+show configuration diff - verificar a diferença entre a configuração ativa - running(-) e a ser aplicada com o commit(+)
+
+show configuration commit list - verifica os ultimos commitis feitos
+
+****ROLLBACK DAS CONFIGURAÇÕES****
+rollback configuration <0 -64> o 0 é o ultimo commit realizado, desfaz a configuração até a possição selecionada(tudo ou parcial) - rollback inteiro até a possição escolhida.
+
+rollback selective  <0-64> permite incluir ou exlcuir configurações conformer a possiçaõ selecionada do rollback - não retorna a todas as configurações, só atua na selecionada. 
+
